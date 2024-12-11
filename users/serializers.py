@@ -37,7 +37,10 @@ class LoginSerializer(serializers.Serializer):
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['email', 'username', 'password', 'first_name', 'last_name']
+        fields = [
+            'email', 'username', 'password',
+            'first_name', 'last_name', 'company', 'position', 'company_sector'
+        ]
         extra_kwargs = {
             'password': {'write_only': True},
         }
@@ -49,5 +52,8 @@ class RegisterSerializer(serializers.ModelSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['email', 'first_name', 'last_name']
+        fields = [
+            'email', 'first_name', 'last_name',
+            'company', 'position', 'company_sector'
+        ]
         read_only_fields = ['email']
