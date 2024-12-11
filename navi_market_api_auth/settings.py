@@ -41,6 +41,11 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'users',
     'corsheaders',
+    'companies',
+    'events',
+    'interactions',
+    'gamification',
+    'campaigns',
 ]
 
 REST_FRAMEWORK = {
