@@ -1,12 +1,13 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status, permissions
+from rest_framework import status, permissions, viewsets
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.viewsets import ReadOnlyModelViewSet
 from .models import User, Position, Sector
 from .serializers import (
     LoginSerializer,
+    UserSerializer,
     RegisterSerializer,
     ProfileSerializer,
     PositionSerializer,
@@ -144,3 +145,18 @@ class ChangePasswordView(APIView):
             {"detail": "Contraseña actualizada correctamente."},
             status=status.HTTP_200_OK
         )
+
+class AdminUserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [permissions.IsAdminUser]
+
+class AdminPositionViewSet(viewsets.ModelViewSet):
+    queryset = Position.objects.all()
+    serializer_class = PositionSerializer
+    permission_classes = [permissions.IsAdminUser]
+
+class AdminSectorViewSet(viewsets.ModelViewSet):
+    queryset = Sector.objects.all()
+    serializer_class = SectorSerializer
+    permission_classes = [permissions.IsAdminUser]

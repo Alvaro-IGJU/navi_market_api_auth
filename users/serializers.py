@@ -4,6 +4,11 @@ from rest_framework.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.tokens import RefreshToken
 from .models import User, Position, Sector
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'first_name', 'last_name', 'email', 'company', 'position', 'sector']
+
 class PositionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Position
@@ -82,7 +87,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = User
         fields = [
             'email', 'first_name', 'last_name',
-            'company', 'position', 'sector', 'profile_picture'  # Agregado el campo profile_picture
+            'company', 'position', 'sector', 'profile_picture', 'is_superuser'  # Agregado el campo profile_picture
         ]
         read_only_fields = ['email']
 

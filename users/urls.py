@@ -1,11 +1,15 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import LoginView, RegisterView, ProfileView, PositionViewSet, SectorViewSet, ChangePasswordView
+from .views import LoginView, RegisterView, ProfileView, PositionViewSet, SectorViewSet, ChangePasswordView, AdminUserViewSet, AdminPositionViewSet, AdminSectorViewSet
 
 # Rutas con DefaultRouter para Position y Sector
 router = DefaultRouter()
 router.register(r'positions', PositionViewSet, basename='position')  # Rutas para posiciones
 router.register(r'sectors', SectorViewSet, basename='sector')  # Rutas para sectores
+
+router.register(r'admin/users', AdminUserViewSet, basename='admin-users')
+router.register(r'admin/positions', AdminPositionViewSet, basename='admin-positions')
+router.register(r'admin/sectors', AdminSectorViewSet, basename='admin-sectors')
 
 urlpatterns = [
     # Rutas de autenticación y perfil
