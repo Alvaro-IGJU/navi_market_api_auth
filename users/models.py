@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from .managers import CustomUserManager
+from companies.models import Company
 
 company_sectors = [
     "Tecnología e Informática",
@@ -72,17 +73,25 @@ class Position(models.Model):
 
 
 class User(AbstractUser):
+    ROLE_CHOICES = (
+        ('User', 'User'),
+        ('Admin', 'Admin'),
+        ('Company', 'Company'),
+    )
+
     email = models.EmailField(unique=True)  # Campo email obligatorio y único
     username = models.CharField(max_length=150, unique=True)  # Campo username único
-    company = models.CharField(max_length=255, blank=True, null=True)  # Nombre de la empresa
+    company = models.CharField(max_length=255, blank=True, null=True)  # Campo existente (nombre de la empresa como texto)
+    company_relation = models.ForeignKey(  # Nueva relación con el modelo Company
+        Company, on_delete=models.SET_NULL, null=True, blank=True, related_name="users"
+    )
     position = models.ForeignKey(Position, on_delete=models.SET_NULL, null=True, blank=True, related_name="users")
     sector = models.ForeignKey(Sector, on_delete=models.SET_NULL, null=True, blank=True, related_name="users")
     profile_picture = models.TextField(blank=True, null=True)  # Campo para imagen en formato base64
+    role = models.CharField(max_length=50, choices=ROLE_CHOICES, default='User')  # Rol del usuario
 
     USERNAME_FIELD = 'email'  # Identificador principal
     REQUIRED_FIELDS = ['username']  # Campos requeridos además del email
 
-    objects = CustomUserManager()
-
     def __str__(self):
-        return self.email
+        return f"{self.email} - {self.get_role_display()}"

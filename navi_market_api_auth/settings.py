@@ -36,6 +36,8 @@ INSTALLED_APPS = [
     'interactions',
     'gamification',
     'campaigns',
+    'django_extensions',
+
 ]
 
 SIMPLE_JWT = {
