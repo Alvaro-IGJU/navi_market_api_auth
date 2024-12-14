@@ -1,29 +1,81 @@
-from rest_framework.viewsets import ModelViewSet
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .models import Company
 from .serializers import CompanySerializer
 
-class CompanyViewSet(ModelViewSet):
+class AdminCompanyListView(APIView):
     """
-    ViewSet para manejar las operaciones CRUD del modelo Company.
+    Vista para que los administradores puedan listar todas las empresas.
     """
-    queryset = Company.objects.all()
-    serializer_class = CompanySerializer
+    permission_classes = [IsAdminUser]
+
+    def get(self, request):
+        companies = Company.objects.all()
+        serializer = CompanySerializer(companies, many=True)
+        return Response(serializer.data)
+
+class AdminCompanyDetailView(APIView):
+    """
+    Vista para que los administradores puedan recuperar, actualizar o eliminar una empresa específica.
+    """
+    permission_classes = [IsAdminUser]
+
+    def get(self, request, pk):
+        try:
+            company = Company.objects.get(pk=pk)
+            serializer = CompanySerializer(company)
+            return Response(serializer.data)
+        except Company.DoesNotExist:
+            return Response({'error': 'Empresa no encontrada'}, status=status.HTTP_404_NOT_FOUND)
+
+    def put(self, request, pk):
+        try:
+            company = Company.objects.get(pk=pk)
+            serializer = CompanySerializer(company, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Company.DoesNotExist:
+            return Response({'error': 'Empresa no encontrada'}, status=status.HTTP_404_NOT_FOUND)
+
+    def delete(self, request, pk):
+        try:
+            company = Company.objects.get(pk=pk)
+            company.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Company.DoesNotExist:
+            return Response({'error': 'Empresa no encontrada'}, status=status.HTTP_404_NOT_FOUND)
+
+
+class OwnerCompanyDetailView(APIView):
+    """
+    Vista para que el dueño de una empresa pueda recuperar o actualizar los datos de su empresa.
+    """
     permission_classes = [IsAuthenticated]
 
-    def get_queryset(self):
-        user = self.request.user
-        if self.action in ['list', 'retrieve']:
-            if user.company:
-                return Company.objects.filter(id=user.company.id)
-            return Company.objects.none()
-        return Company.objects.all()
+    def get(self, request):
+        # Verifica si el usuario tiene una relación con alguna empresa
+        if not request.user.company_relation:
+            return Response({'error': 'No tienes una empresa asociada.'}, status=status.HTTP_404_NOT_FOUND)
 
-    def perform_create(self, serializer):
-        company = serializer.save()
-        self.request.user.company_relation = company
-        self.request.user.save()
+        # Recupera la empresa asociada
+        company = request.user.company_relation
+        serializer = CompanySerializer(company)
+        return Response(serializer.data)
 
-    def perform_update(self, serializer):
-        if self.request.user.company:
+    def put(self, request):
+        # Verifica si el usuario tiene una relación con alguna empresa
+        if not request.user.company_relation:
+            return Response({'error': 'No tienes una empresa asociada.'}, status=status.HTTP_404_NOT_FOUND)
+
+        # Recupera la empresa asociada
+        company = request.user.company_relation
+        print(request.data)
+        serializer = CompanySerializer(company, data=request.data, partial=True)  # Permite actualizaciones parciales
+        if serializer.is_valid():
             serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

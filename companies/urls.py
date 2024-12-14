@@ -1,7 +1,15 @@
-from rest_framework.routers import DefaultRouter
-from .views import CompanyViewSet
+from django.urls import path
+from .views import (
+    AdminCompanyListView,
+    AdminCompanyDetailView,
+    OwnerCompanyDetailView,
+)
 
-router = DefaultRouter()
-router.register(r'', CompanyViewSet, basename='company')  # Usar una base vacía
-
-urlpatterns = router.urls
+urlpatterns = [
+    # Rutas para administradores
+    path('admin/companies/', AdminCompanyListView.as_view(), name='admin-company-list'),
+    path('admin/companies/<int:pk>/', AdminCompanyDetailView.as_view(), name='admin-company-detail'),
+    
+    # Rutas para dueños de empresas
+    path('owner/company/', OwnerCompanyDetailView.as_view(), name='owner-company-detail'),
+]

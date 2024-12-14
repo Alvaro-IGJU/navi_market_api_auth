@@ -9,6 +9,7 @@ from rest_framework.viewsets import ReadOnlyModelViewSet
 from .permissions import IsSuperUser  
 from django.core.mail import send_mail
 from .models import User, Position, Sector
+from companies.models import Company
 from .serializers import (
     LoginSerializer,
     UserSerializer,
@@ -190,25 +191,36 @@ class CreateCompanyUserView(APIView):
         password = get_random_string(length=12)
         user = User.objects.create_user(email=email, username=username, password=password, role='Company')
 
-        # Enviar correo electrónico al usuario
-        subject = "Bienvenido a nuestra plataforma"
-        message = (
-            f"Hola {username},\n\n"
-            f"Se ha creado una cuenta para ti en nuestra plataforma.\n\n"
-            f"Tu nombre de usuario: {username}\n"
-            f"Tu contraseña: {password}\n\n"
-            f"Por favor, inicia sesión y cambia tu contraseña.\n\n"
-            f"Saludos,\nEl equipo de soporte."
+        # Crear una empresa asociada al usuario
+        company = Company.objects.create(
+            name=f"Empresa de {username}",  # Nombre genérico
+            contact_email=email,
+            description=f"Descripción de la empresa de {username}.",
         )
-        from_email = 'tu_email@gmail.com'  # Cambia por tu dirección de email
-        try:
-            send_mail(subject, message, from_email, [email])
-        except Exception as e:
-            return Response(
-                {'error': f'Usuario creado, pero no se pudo enviar el correo: {str(e)}'},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
+        # Asignar la empresa al usuario
+        user.company_relation = company
+        user.save()
+
+        # Enviar correo electrónico al usuario (comentar esta parte temporalmente)
+        # subject = "Bienvenido a nuestra plataforma"
+        # message = (
+        #     f"Hola {username},\n\n"
+        #     f"Se ha creado una cuenta para ti en nuestra plataforma.\n\n"
+        #     f"Tu nombre de usuario: {username}\n"
+        #     f"Tu contraseña: {password}\n\n"
+        #     f"Por favor, inicia sesión y cambia tu contraseña.\n\n"
+        #     f"Saludos,\nEl equipo de soporte."
+        # )
+        # from_email = 'tu_email@gmail.com'  # Cambia por tu dirección de email
+        # try:
+        #     send_mail(subject, message, from_email, [email])
+        # except Exception as e:
+        #     return Response(
+        #         {'error': f'Usuario creado y empresa asociada, pero no se pudo enviar el correo: {str(e)}'},
+        #         status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        #     )
 
         return Response({
-            'message': 'Usuario de empresa creado con éxito. Se ha enviado un correo al usuario.',
+            'message': f'Usuario de empresa creado con éxito y empresa asociada. Contraseña: {password}',
+            'password': password
         }, status=status.HTTP_201_CREATED)
