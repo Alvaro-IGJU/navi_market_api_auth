@@ -202,25 +202,24 @@ class CreateCompanyUserView(APIView):
         user.save()
 
         # Enviar correo electrónico al usuario (comentar esta parte temporalmente)
-        # subject = "Bienvenido a nuestra plataforma"
-        # message = (
-        #     f"Hola {username},\n\n"
-        #     f"Se ha creado una cuenta para ti en nuestra plataforma.\n\n"
-        #     f"Tu nombre de usuario: {username}\n"
-        #     f"Tu contraseña: {password}\n\n"
-        #     f"Por favor, inicia sesión y cambia tu contraseña.\n\n"
-        #     f"Saludos,\nEl equipo de soporte."
-        # )
-        # from_email = 'tu_email@gmail.com'  # Cambia por tu dirección de email
-        # try:
-        #     send_mail(subject, message, from_email, [email])
-        # except Exception as e:
-        #     return Response(
-        #         {'error': f'Usuario creado y empresa asociada, pero no se pudo enviar el correo: {str(e)}'},
-        #         status=status.HTTP_500_INTERNAL_SERVER_ERROR
-        #     )
+        subject = "Bienvenido a nuestra plataforma"
+        message = (
+            f"Hola {username},\n\n"
+            f"Se ha creado una cuenta para ti en nuestra plataforma.\n\n"
+            f"Tu nombre de usuario: {username}\n"
+            f"Tu contraseña: {password}\n\n"
+            f"Por favor, inicia sesión y cambia tu contraseña.\n\n"
+            f"Saludos,\nEl equipo de soporte."
+        )
+        from_email = 'navi-market@gmail.com'  # Cambia por tu dirección de email
+        try:
+            send_mail(subject, message, from_email, [email])
+        except Exception as e:
+            return Response(
+                {'error': f'Usuario creado y empresa asociada, pero no se pudo enviar el correo: {str(e)}'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
         return Response({
-            'message': f'Usuario de empresa creado con éxito y empresa asociada. Contraseña: {password}',
-            'password': password
+            'message': f'Usuario de empresa creado con éxito.',
         }, status=status.HTTP_201_CREATED)
