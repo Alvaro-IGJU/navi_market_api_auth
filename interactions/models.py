@@ -5,9 +5,11 @@ from events.models import Event, Stand
 class Visit(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="visits")
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="visits")
-    time_spent_seconds = models.IntegerField()
+    time_spent_seconds = models.IntegerField(default=0)  # Inicializamos con 0
     is_recurrent = models.BooleanField(default=False)
     visit_date = models.DateTimeField(auto_now_add=True)
+    last_entry_time = models.DateTimeField(null=True, blank=True)  # Para registrar la entrada
+
 
 class Interaction(models.Model):
     visit = models.ForeignKey(Visit, on_delete=models.CASCADE, related_name="interactions")

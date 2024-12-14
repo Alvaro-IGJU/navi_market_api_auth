@@ -1,9 +1,7 @@
-from rest_framework.routers import DefaultRouter
-from .views import VisitViewSet, InteractionViewSet, LeadViewSet
+from django.urls import path
+from .views import RegisterVisitView, CloseVisitView
 
-router = DefaultRouter()
-router.register(r'visits', VisitViewSet)
-router.register(r'interactions', InteractionViewSet)
-router.register(r'leads', LeadViewSet)
-
-urlpatterns = router.urls
+urlpatterns = [
+    path('visits/register/<int:event_id>/', RegisterVisitView.as_view(), name='register-visit'),
+    path('visits/close/<int:event_id>/', CloseVisitView.as_view(), name='close-visit'),
+]
