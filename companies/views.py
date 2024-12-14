@@ -20,7 +20,6 @@ class CompanyViewSet(ModelViewSet):
         return Company.objects.all()
 
     def perform_create(self, serializer):
-        print("SERIALIZER", serializer)
         company = serializer.save()
         self.request.user.company_relation = company
         self.request.user.save()

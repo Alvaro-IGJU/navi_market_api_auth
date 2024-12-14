@@ -2,9 +2,12 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, permissions, viewsets
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
+from django.contrib.auth import get_user_model
+from django.utils.crypto import get_random_string
 from rest_framework.viewsets import ReadOnlyModelViewSet
 from .permissions import IsSuperUser  
+from django.core.mail import send_mail
 from .models import User, Position, Sector
 from .serializers import (
     LoginSerializer,
@@ -161,3 +164,34 @@ class AdminSectorViewSet(viewsets.ModelViewSet):
     queryset = Sector.objects.all()
     serializer_class = SectorSerializer
     permission_classes = [IsSuperUser]
+
+class CreateCompanyUserView(APIView):
+    permission_classes = [IsAdminUser]
+
+    def post(self, request):
+        email = request.data.get('email')
+        User = get_user_model()
+
+        # Verificar si el usuario ya existe
+        if User.objects.filter(email=email).exists():
+            return Response({'error': 'El usuario ya existe.'}, status=status.HTTP_409_CONFLICT)
+
+        # Generar un nombre de usuario basado en el email
+        username_base = email.split('@')[0]
+        username = username_base
+        counter = 1
+
+        # Asegurarse de que el username sea único
+        while User.objects.filter(username=username).exists():
+            username = f"{username_base}{counter}"
+            counter += 1
+
+        # Crear usuario con contraseña generada
+        password = get_random_string(length=12)
+        user = User.objects.create_user(email=email, username=username, password=password, role='Company')
+
+        return Response({
+            'message': 'Usuario de empresa creado con éxito.',
+            'password': password,
+        }, status=status.HTTP_201_CREATED)
+
