@@ -4,7 +4,7 @@ from .models import Event, Stand
 class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
-        fields = '__all__'
+        fields = ['id', 'name', 'start_date', 'end_date', 'description', 'image']
 
 class StandSerializer(serializers.ModelSerializer):
     class Meta:
