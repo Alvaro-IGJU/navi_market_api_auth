@@ -8,7 +8,6 @@ class Visit(models.Model):
     time_spent_seconds = models.IntegerField(default=0)  # Inicializamos con 0
     is_recurrent = models.BooleanField(default=False)
     visit_date = models.DateTimeField(auto_now_add=True)
-    last_entry_time = models.DateTimeField(null=True, blank=True)  # Para registrar la entrada
 
 
 class Interaction(models.Model):
