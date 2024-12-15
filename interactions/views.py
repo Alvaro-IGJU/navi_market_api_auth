@@ -7,7 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from django.utils.timezone import now
 from rest_framework import status
-
+from events.models import Stand
 
 class RegisterVisitView(APIView):
     permission_classes = [IsAuthenticated]
@@ -57,10 +57,47 @@ class CloseVisitView(APIView):
 
 
 
-class InteractionViewSet(viewsets.ModelViewSet):
-    queryset = Interaction.objects.all()
-    serializer_class = InteractionSerializer
+class RegisterInteractionView(APIView):
+    def post(self, request, stand_id):
+        try:
+            user = request.user
+            stand = Stand.objects.get(id=stand_id)
 
-class LeadViewSet(viewsets.ModelViewSet):
-    queryset = Lead.objects.all()
-    serializer_class = LeadSerializer
+            # Intentar obtener una visita activa o crear una nueva
+            visit = Visit.objects.filter(user=user, event=stand.event).order_by("-visit_date").first()
+
+            if not visit:
+                visit = Visit.objects.create(user=user, event=stand.event)
+
+            # Registrar interacción
+            interaction = Interaction.objects.create(
+                visit=visit,
+                stand=stand,
+                interaction_type=request.data.get("interaction_type"),
+            )
+
+            return Response(
+                {"interaction_id": interaction.id},
+                status=status.HTTP_201_CREATED,
+            )
+        except Stand.DoesNotExist:
+            return Response(
+                {"error": "Stand not found"}, status=status.HTTP_404_NOT_FOUND
+            )
+
+class UpdateInteractionDurationView(APIView):
+    def post(self, request, interaction_id):
+        try:
+            interaction = Interaction.objects.get(id=interaction_id)
+            duration = request.data.get("duration", 0)
+            interaction.interaction_duration += duration
+            interaction.save()
+
+            return Response(
+                {"message": "Duration updated successfully"},
+                status=status.HTTP_200_OK,
+            )
+        except Interaction.DoesNotExist:
+            return Response(
+                {"error": "Interaction not found"}, status=status.HTTP_404_NOT_FOUND
+            )

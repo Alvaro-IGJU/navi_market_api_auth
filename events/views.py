@@ -137,3 +137,20 @@ class StandDeleteView(APIView):
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Stand.DoesNotExist:
             return Response({'error': 'Stand no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+        
+class EventStandsView(APIView):
+    """
+    Vista para listar los stands de un evento específico.
+    """
+    permission_classes = [AllowAny]  # Cambiar a IsAuthenticated si la autenticación es requerida.
+
+    def get(self, request, event_id):
+        try:
+            event = Event.objects.get(pk=event_id)
+        except Event.DoesNotExist:
+            return Response({"error": "El evento no existe."}, status=status.HTTP_404_NOT_FOUND)
+
+        # Filtrar los stands asociados al evento
+        stands = Stand.objects.filter(event=event)
+        serializer = StandSerializer(stands, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

@@ -13,9 +13,10 @@ class Visit(models.Model):
 class Interaction(models.Model):
     visit = models.ForeignKey(Visit, on_delete=models.CASCADE, related_name="interactions")
     stand = models.ForeignKey(Stand, on_delete=models.CASCADE, related_name="interactions")
-    interaction_type = models.CharField(max_length=50)  # "mailbox", "info_pc", etc.
+    interaction_type = models.CharField(max_length=50)  # e.g., "mailbox", "info_pc", etc.
     interaction_date = models.DateTimeField(auto_now_add=True)
     interaction_details = models.TextField(blank=True, null=True)
+    interaction_duration = models.IntegerField(default=0)  # Duration in seconds
 
 class Lead(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="leads")
