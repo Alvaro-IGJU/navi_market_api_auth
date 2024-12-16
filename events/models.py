@@ -14,4 +14,4 @@ class Stand(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name="stands")
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
-    coordinates = models.JSONField(blank=True, null=True)
+    position = models.IntegerField(blank=True, null=True)
