@@ -99,11 +99,35 @@ class StandCreateView(APIView):
     permission_classes = [IsAdminUser]
 
     def post(self, request):
-        serializer = StandSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        print(request.data)
+        try:
+            # Obtener el evento
+            event = Event.objects.get(pk=request.data["event"])
+
+            # Validar que no exista un stand en la misma posición para este evento
+            stands = Stand.objects.filter(event=event)
+            for stand in stands:
+                if int(stand.position) == int(request.data["position"]):  # Comparar como enteros
+                    return Response(
+                        {"error": "Ya existe un stand en esa posición."},
+                        status=status.HTTP_400_BAD_REQUEST,
+                    )
+
+            # Crear el stand si no hay conflictos
+            serializer = StandSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Event.DoesNotExist:
+            return Response(
+                {"error": "El evento no existe."}, status=status.HTTP_404_NOT_FOUND
+            )
+        except Exception as e:
+            return Response(
+                {"error": f"Error al crear el stand: {str(e)}"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
 
 
 class StandUpdateView(APIView):
