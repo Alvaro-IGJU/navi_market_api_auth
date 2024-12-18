@@ -154,3 +154,4 @@ class EventStandsView(APIView):
         stands = Stand.objects.filter(event=event)
         serializer = StandSerializer(stands, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
