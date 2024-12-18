@@ -49,6 +49,7 @@ class LoginSerializer(serializers.Serializer):
             'email': user.email,
             'username': user.username,
             'tokens': self.get_tokens(user),
+            'role': user.role
         }
 
 
@@ -87,7 +88,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = User
         fields = [
             'email', 'first_name', 'last_name',
-            'company', 'position', 'sector', 'profile_picture', 'is_superuser', 'role'  # Agregado el campo profile_picture
+            'company', 'position', 'sector', 'profile_picture', 'is_superuser', 'role', 'company_relation'  # Agregado el campo profile_picture
         ]
         read_only_fields = ['email']
 

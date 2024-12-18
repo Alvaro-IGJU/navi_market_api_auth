@@ -24,3 +24,4 @@ urlpatterns = [
     path('admin/create-company-user/', CreateCompanyUserView.as_view(), name='create_company_user'),
 
 ]
+# dK0fjASlM8G3

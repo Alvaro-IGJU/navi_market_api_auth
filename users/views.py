@@ -190,7 +190,7 @@ class CreateCompanyUserView(APIView):
         # Crear usuario con contraseña generada
         password = get_random_string(length=12)
         user = User.objects.create_user(email=email, username=username, password=password, role='Company')
-
+        print(password)
         # Crear una empresa asociada al usuario
         company = Company.objects.create(
             name=f"Empresa de {username}",  # Nombre genérico
