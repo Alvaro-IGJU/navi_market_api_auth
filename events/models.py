@@ -8,6 +8,7 @@ class Event(models.Model):
     end_date = models.DateField()
     description = models.TextField(blank=True, null=True)
     image = models.TextField(blank=True, null=True)  # Cambia a TextField para almacenar base64
+    max_stands = models.PositiveIntegerField(default=10)  # Número máximo de stands permitido
 
 
 class Stand(models.Model):
@@ -23,6 +24,8 @@ class Stand(models.Model):
     description = models.TextField(blank=True, null=True)
     position = models.IntegerField(blank=True, null=True)
     type = models.CharField(max_length=50, choices=TYPE_CHOICES, default='basic')
+    pdf = models.TextField(blank=True, null=True)  # Almacenar PDF en formato base64
+
 
     def __str__(self):
         return self.name

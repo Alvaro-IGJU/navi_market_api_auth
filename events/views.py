@@ -41,6 +41,7 @@ class EventCreateView(APIView):
     permission_classes = [IsAdminUser]
 
     def post(self, request):
+        print(request.data)
         serializer = EventSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -99,21 +100,28 @@ class StandCreateView(APIView):
     permission_classes = [IsAdminUser]
 
     def post(self, request):
-        print(request.data)
         try:
             # Obtener el evento
             event = Event.objects.get(pk=request.data["event"])
+            print(request.data)
+            # Validar si el evento alcanzó el número máximo de stands
+            current_stand_count = Stand.objects.filter(event=event).count()
+            if current_stand_count >= event.max_stands:
+                return Response(
+                    {"error": f"El evento '{event.name}' ya alcanzó el máximo de stands permitidos ({event.max_stands})."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
 
-            # Validar que no exista un stand en la misma posición para este evento
+            # Validar si ya existe un stand en la misma posición
             stands = Stand.objects.filter(event=event)
             for stand in stands:
-                if int(stand.position) == int(request.data["position"]):  # Comparar como enteros
+                if int(stand.position) == int(request.data["position"]):
                     return Response(
                         {"error": "Ya existe un stand en esa posición."},
                         status=status.HTTP_400_BAD_REQUEST,
                     )
 
-            # Crear el stand si no hay conflictos
+            # Crear el stand
             serializer = StandSerializer(data=request.data)
             if serializer.is_valid():
                 serializer.save()
