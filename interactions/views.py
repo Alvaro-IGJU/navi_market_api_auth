@@ -13,7 +13,7 @@ from django.db.models.functions import TruncDate
 from django.shortcuts import get_object_or_404
 from openai import OpenAI
 
-client = OpenAI(api_key="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")
+client = OpenAI(api_key="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")
 
 from navi_market_api_auth.settings import OPENAI_API_KEY
 
@@ -246,7 +246,7 @@ class ChatbotView(APIView):
             # OpenAI integration
             response = client.chat.completions.create(model="gpt-4o",
             messages=[
-                {"role": "system", "content": f"Eres un asistente virtual de la empresa {company.name}."},
+                {"role": "system", "content": f"Eres un asistente virtual de la empresa {company.name}. Seguiras las siguientes instrucciones: {stand.prompts}"},
                 {"role": "user", "content": question},
             ])
             chatbot_response = response.choices[0].message.content.strip()

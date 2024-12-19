@@ -5,7 +5,9 @@ from rest_framework import status
 from .models import Event, Stand
 from rest_framework.response import Response
 from .serializers import EventSerializer, StandSerializer
-
+from PyPDF2 import PdfReader
+from io import BytesIO
+import base64
 
 class EventListView(APIView):
     """
@@ -121,8 +123,32 @@ class StandCreateView(APIView):
                         status=status.HTTP_400_BAD_REQUEST,
                     )
 
+        
+            # Procesar el PDF si `prompts_pdf` está presente
+            prompts_text = ""
+            prompts_pdf = request.data.get("prompts_pdf")
+            if prompts_pdf:
+                try:
+                    # Decodificar el PDF desde Base64
+                    pdf_bytes = base64.b64decode(prompts_pdf)
+                    pdf_stream = BytesIO(pdf_bytes)
+
+                    # Leer el texto del PDF
+                    reader = PdfReader(pdf_stream)
+                    for page in reader.pages:
+                        prompts_text += page.extract_text() + "\n"  # Concatenar el texto de las páginas
+                except Exception as e:
+                    return Response(
+                        {"error": "Error al procesar el PDF", "details": str(e)},
+                        status=status.HTTP_400_BAD_REQUEST,
+                    )
+
             # Crear el stand
-            serializer = StandSerializer(data=request.data)
+            stand_data = {
+                **request.data,
+                "prompts": prompts_text.strip(),  # Guardar los prompts extraídos
+            }
+            serializer = StandSerializer(data=stand_data)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)

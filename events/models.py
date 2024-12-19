@@ -11,6 +11,8 @@ class Event(models.Model):
     max_stands = models.PositiveIntegerField(default=10)  # Número máximo de stands permitido
 
 
+from django.db import models
+
 class Stand(models.Model):
     TYPE_CHOICES = [
         ('basic', 'Basic'),
@@ -24,8 +26,9 @@ class Stand(models.Model):
     description = models.TextField(blank=True, null=True)
     position = models.IntegerField(blank=True, null=True)
     type = models.CharField(max_length=50, choices=TYPE_CHOICES, default='basic')
-    pdf = models.TextField(blank=True, null=True)  # Almacenar PDF en formato base64
-
+    catalog_pdf = models.TextField(blank=True, null=True)  # Almacenar PDF en formato base64
+    prompts = models.TextField(blank=True, null=True)  # Guardar prompts extraídos del PDF
 
     def __str__(self):
         return self.name
+
