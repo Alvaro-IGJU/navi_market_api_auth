@@ -1,15 +1,15 @@
 from django.urls import path
-from .views import (
-    AdminCompanyListView,
-    AdminCompanyDetailView,
-    OwnerCompanyDetailView,
+from companies.views.companies import (
+    CompanyAdminListView,
+    CompanyAdminDetailView,
+    CompanyOwnerDetailView
 )
 
 urlpatterns = [
     # Rutas para administradores
-    path('admin/companies/', AdminCompanyListView.as_view(), name='admin-company-list'),
-    path('admin/companies/<int:pk>/', AdminCompanyDetailView.as_view(), name='admin-company-detail'),
+    path('admin/companies/', CompanyAdminListView.as_view(), name='admin-company-list'),
+    path('admin/companies/<int:pk>/', CompanyAdminDetailView.as_view(), name='admin-company-detail'),
     
     # Rutas para dueños de empresas
-    path('owner/company/', OwnerCompanyDetailView.as_view(), name='owner-company-detail'),
+    path('owner/company/', CompanyOwnerDetailView.as_view(), name='owner-company-detail'),
 ]
