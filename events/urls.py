@@ -1,5 +1,19 @@
 from django.urls import path
-from .views import *
+from events.views.events import (
+    EventListView,
+    EventRetrieveView,
+    EventCreateView,
+    EventUpdateView,
+    EventDeleteView,
+    EventStandsView,
+)
+from events.views.stands import (
+    StandListView,
+    StandCreateView,
+    StandUpdateView,
+    StandDeleteView
+    )
+
 
 urlpatterns = [
     path('', EventListView.as_view(), name='event-list'),
