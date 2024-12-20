@@ -2,7 +2,7 @@ from django.urls import path
 from companies.views.companies import (
     CompanyAdminListView,
     CompanyAdminDetailView,
-    CompanyOwnerDetailView
+    CompanyOwnerDetailView,
 )
 
 urlpatterns = [
@@ -12,4 +12,5 @@ urlpatterns = [
     
     # Rutas para dueños de empresas
     path('owner/company/', CompanyOwnerDetailView.as_view(), name='owner-company-detail'),
+
 ]

@@ -1,3 +1,4 @@
 from .VisitRegisterView import VisitRegisterView
 from .VisitCloseView import VisitCloseView
 from .VisitCompanyEventSummaryView import VisitCompanyEventSummaryView
+from .VisitAdminEventSummaryView import VisitAdminEventSummaryView
