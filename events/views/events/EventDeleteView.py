@@ -1,5 +1,5 @@
 from rest_framework.views import APIView
-from rest_framework.permissions import  IsAdminUser
+from users.permissions import  IsSuperUser
 from rest_framework import status
 from events.models import Event
 from rest_framework.response import Response
@@ -8,7 +8,7 @@ class EventDeleteView(APIView):
     """
     Vista para eliminar un evento (Solo administradores).
     """
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsSuperUser]
 
     def delete(self, request, pk):
         try:

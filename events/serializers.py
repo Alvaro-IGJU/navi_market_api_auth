@@ -10,3 +10,6 @@ class StandSerializer(serializers.ModelSerializer):
     class Meta:
         model = Stand
         fields = '__all__'
+        extra_kwargs = {
+            'prompts': {'write_only': True},  # El campo "prompts" será solo para escritura
+        }

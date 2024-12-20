@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.permissions import IsAdminUser
+from users.permissions import IsSuperUser
 from django.contrib.auth import get_user_model
 from django.utils.crypto import get_random_string
 from django.core.mail import send_mail
@@ -9,7 +9,7 @@ from companies.models import Company
 
 
 class AdminCreateCompanyUserView(APIView):
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsSuperUser]
 
     def post(self, request):
         email = request.data.get('email')

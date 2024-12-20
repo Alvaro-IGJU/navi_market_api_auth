@@ -1,5 +1,5 @@
 from rest_framework.views import APIView
-from rest_framework.permissions import  IsAdminUser
+from users.permissions import  IsSuperUser
 from rest_framework import status
 from rest_framework.response import Response
 from events.serializers import EventSerializer
@@ -9,7 +9,7 @@ class EventCreateView(APIView):
     """
     Vista para crear un nuevo evento (Solo administradores).
     """
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsSuperUser]
 
     def post(self, request):
         print(request.data)
