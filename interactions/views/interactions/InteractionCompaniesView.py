@@ -16,6 +16,14 @@ class InteractionCompaniesView(APIView):
 
     def get(self, request, company_id):
         try:
+            # Verificar que el usuario está relacionado con la empresa
+            user = request.user
+            if not user.company_relation or user.company_relation.id != company_id:
+                return Response(
+                    {"error": "No tienes permiso para acceder aquí."},
+                    status=status.HTTP_403_FORBIDDEN,
+                )
+
             # Filtrar los stands por empresa
             stands = Stand.objects.filter(company_id=company_id)
 
@@ -61,4 +69,5 @@ class InteractionCompaniesView(APIView):
 
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 

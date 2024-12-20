@@ -16,6 +16,6 @@ class IsCompany(BasePermission):
         # Verificar que el usuario esté autenticado y tenga un campo 'type' igual a "Company"
         user = request.user
         print(f"Usuario autenticado: {user}")
-        if user.is_authenticated and hasattr(user, 'type') and user.type == "Company":
+        if user.is_authenticated and hasattr(user, 'role') and user.role == "Company":
             return True
         return False

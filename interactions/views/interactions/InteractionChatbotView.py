@@ -8,7 +8,6 @@ client = OpenAI(api_key="sk-proj-65dUa9RQy9V1YRAsdiQxacaoe4_mxWnw8lWEaq7JkpbuG9t
 
 from navi_market_api_auth.settings import OPENAI_API_KEY
 
-
 class InteractionChatbotView(APIView):
     """
     Chatbot para responder preguntas relacionadas con la empresa del stand.

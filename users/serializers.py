@@ -56,7 +56,13 @@ class LoginSerializer(serializers.Serializer):
 class RegisterSerializer(serializers.ModelSerializer):
     position = serializers.PrimaryKeyRelatedField(queryset=Position.objects.all(), required=False)
     sector = serializers.PrimaryKeyRelatedField(queryset=Sector.objects.all(), required=False)
-
+    password = serializers.CharField(
+            write_only=True, 
+            min_length=8, 
+            error_messages={
+                'min_length': 'La contraseña debe tener al menos 8 caracteres.'
+            }
+        )
     class Meta:
         model = User
         fields = [
