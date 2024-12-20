@@ -1,6 +1,7 @@
 from interactions.models import Interaction
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from users.permissions import IsCompany
 from rest_framework.views import APIView
 from rest_framework import status
 from events.models import Stand
@@ -11,7 +12,7 @@ class InteractionCompaniesView(APIView):
     Devuelve las interacciones realizadas en los stands de una empresa específica,
     tanto el total como por cada stand.
     """
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsCompany]
 
     def get(self, request, company_id):
         try:
