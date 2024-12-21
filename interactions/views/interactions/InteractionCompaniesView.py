@@ -5,12 +5,12 @@ from users.permissions import IsCompany
 from rest_framework.views import APIView
 from rest_framework import status
 from events.models import Stand
-from django.db.models import Count, Sum
+from django.db.models import Count, Sum, Avg
 
 class InteractionCompaniesView(APIView):
     """
     Devuelve las interacciones realizadas en los stands de una empresa específica,
-    tanto el total como por cada stand.
+    incluyendo tiempo promedio y usuarios únicos basados en la relación visit.user_id.
     """
     permission_classes = [IsAuthenticated, IsCompany]
 
@@ -39,7 +39,9 @@ class InteractionCompaniesView(APIView):
             # Resumen general de interacciones por tipo
             interaction_summary = interactions.values("interaction_type").annotate(
                 total_interactions=Count("id"),
-                total_duration=Sum("interaction_duration")
+                total_duration=Sum("interaction_duration"),
+                average_duration=Avg("interaction_duration"),
+                unique_users=Count("visit__user_id", distinct=True)  # Relación con user_id a través de visit
             )
 
             # Datos específicos por stand
@@ -47,13 +49,17 @@ class InteractionCompaniesView(APIView):
             for stand in stands:
                 stand_interactions = interactions.filter(stand=stand).values("interaction_type").annotate(
                     total_interactions=Count("id"),
-                    total_duration=Sum("interaction_duration")
+                    total_duration=Sum("interaction_duration"),
+                    average_duration=Avg("interaction_duration"),
+                    unique_users=Count("visit__user_id", distinct=True)  # Relación con user_id a través de visit
                 )
                 stands_data.append({
                     "stand_id": stand.id,
                     "stand_name": stand.name,
                     "event_name": stand.event.name,  # Incluye el nombre del evento del stand
                     "total_interactions": sum([item["total_interactions"] for item in stand_interactions]),
+                    "unique_users": interactions.filter(stand=stand).values("visit__user_id").distinct().count(),
+                    "average_duration": stand_interactions.aggregate(Avg("interaction_duration")),
                     "interaction_details": list(stand_interactions),
                 })
 
@@ -61,6 +67,7 @@ class InteractionCompaniesView(APIView):
             response_data = {
                 "company_id": company_id,
                 "total_interactions": interactions.count(),
+                "unique_users": interactions.values("visit__user_id").distinct().count(),
                 "interaction_details": list(interaction_summary),  # Resumen global
                 "stands_details": stands_data,  # Interacciones por stand
             }
@@ -69,5 +76,3 @@ class InteractionCompaniesView(APIView):
 
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-

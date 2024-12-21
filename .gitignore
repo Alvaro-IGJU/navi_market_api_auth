@@ -1,2 +1,20 @@
+# Python bytecode
+*.pyc
+__pycache__/
+
+# Entornos virtuales
 venv/
-db.sqlite3
+env/
+.env/
+
+# Configuración de editor
+.vscode/
+.idea/
+
+# Archivos de logs
+*.log
+
+# Archivos temporales
+*.swp
+*.tmp
+.DS_Store
