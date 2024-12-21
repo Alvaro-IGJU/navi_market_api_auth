@@ -1,5 +1,5 @@
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
+from users.permissions import IsSuperUser
 from rest_framework.viewsets import ModelViewSet
 from rest_framework import status
 from events.models import Event, Stand
@@ -14,7 +14,7 @@ class StandCreateView(APIView):
     """
     Vista para crear un nuevo stand (Solo administradores).
     """
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsSuperUser]
 
     def post(self, request):
         try:

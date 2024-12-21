@@ -10,7 +10,8 @@ from interactions.views.interactions import (
     InteractionRegisterView,
     InteractionChatbotView,
     InteractionUpdateDurationView, 
-    InteractionCompaniesView
+    InteractionCompaniesView,
+    InteractionUsersLocationView
 )
 
 urlpatterns = [
@@ -24,7 +25,8 @@ urlpatterns = [
     path("update-duration/<int:interaction_id>/", InteractionUpdateDurationView.as_view(), name="update-interaction-duration"),
     path("companies/<int:company_id>/interactions/", InteractionCompaniesView.as_view(), name="company-interactions"),
     path("companies/<int:company_id>/events-visits/", VisitCompanyEventSummaryView.as_view(), name="company-events-visits"),
-    
+    path('companies/<int:company_id>/users-location/', InteractionUsersLocationView.as_view(), name='users-location'),
+
     # Nueva URL para el resumen de visitas para el admin
     path("admin/events-visits-summary/", VisitAdminEventSummaryView.as_view(), name="admin-events-visits-summary"),  # Nueva ruta para admin
 ]

@@ -89,6 +89,7 @@ class User(AbstractUser):
     sector = models.ForeignKey(Sector, on_delete=models.SET_NULL, null=True, blank=True, related_name="users")
     profile_picture = models.TextField(blank=True, null=True)  # Campo para imagen en formato base64
     role = models.CharField(max_length=50, choices=ROLE_CHOICES, default='User')  # Rol del usuario
+    location = models.CharField(max_length=255, blank=True, null=True)  # Nuevo campo para la ubicación del usuario
 
     USERNAME_FIELD = 'email'  # Identificador principal
     REQUIRED_FIELDS = ['username']  # Campos requeridos además del email
