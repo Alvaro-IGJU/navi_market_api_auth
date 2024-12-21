@@ -11,7 +11,9 @@ from interactions.views.interactions import (
     InteractionChatbotView,
     InteractionUpdateDurationView, 
     InteractionCompaniesView,
-    InteractionUsersLocationView
+    InteractionUsersLocationView,
+    InteractionCompanyUserPositionsView,
+    InteractionCompanyUserSectorsView
 )
 
 urlpatterns = [
@@ -26,6 +28,8 @@ urlpatterns = [
     path("companies/<int:company_id>/interactions/", InteractionCompaniesView.as_view(), name="company-interactions"),
     path("companies/<int:company_id>/events-visits/", VisitCompanyEventSummaryView.as_view(), name="company-events-visits"),
     path('companies/<int:company_id>/users-location/', InteractionUsersLocationView.as_view(), name='users-location'),
+    path('companies/<int:company_id>/user-positions/', InteractionCompanyUserPositionsView.as_view(), name='user-positions'),
+    path('companies/<int:company_id>/user-sectors/', InteractionCompanyUserSectorsView.as_view(), name='user-sectors'),
 
     # Nueva URL para el resumen de visitas para el admin
     path("admin/events-visits-summary/", VisitAdminEventSummaryView.as_view(), name="admin-events-visits-summary"),  # Nueva ruta para admin
