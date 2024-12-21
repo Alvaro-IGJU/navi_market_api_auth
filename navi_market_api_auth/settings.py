@@ -103,7 +103,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'navi_market',
         'USER': 'root',
-        'PASSWORD': '',
+        'PASSWORD': 'vedruna',
         'HOST': 'localhost',  # O la IP del servidor de la base de datos
         'PORT': '3306',
     }

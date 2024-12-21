@@ -1,4 +1,4 @@
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny
 from rest_framework.viewsets import ReadOnlyModelViewSet
 from users.models import Sector
 from users.serializers import (
@@ -11,4 +11,4 @@ class SectorViewSet(ReadOnlyModelViewSet):
     """
     queryset = Sector.objects.all().order_by('name')  # Ordena por el campo `name`
     serializer_class = SectorSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]

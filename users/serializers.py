@@ -7,7 +7,7 @@ from .models import User, Position, Sector
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'first_name', 'last_name', 'email', 'company', 'position', 'sector']
+        fields = ['id', 'email', 'company', 'position', 'sector']
 
 class PositionSerializer(serializers.ModelSerializer):
     class Meta:
@@ -67,7 +67,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         model = User
         fields = [
             'email', 'username', 'password',
-            'first_name', 'last_name', 'company', 'position', 'sector'
+            'company', 'position', 'sector'
         ]
         extra_kwargs = {
             'password': {'write_only': True},
@@ -93,7 +93,7 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
-            'email', 'first_name', 'last_name',
+            'email',
             'company', 'position', 'sector', 'profile_picture', 'is_superuser', 'role', 'company_relation', 'location'  # Agregado el campo profile_picture
         ]
         read_only_fields = ['email']

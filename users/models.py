@@ -80,7 +80,7 @@ class User(AbstractUser):
     )
 
     email = models.EmailField(unique=True)  # Campo email obligatorio y único
-    username = models.CharField(max_length=150, unique=True)  # Campo username único
+    username = models.CharField(max_length=150, unique=False)  # Campo username único
     company = models.CharField(max_length=255, blank=True, null=True)  # Campo existente (nombre de la empresa como texto)
     company_relation = models.ForeignKey(  # Nueva relación con el modelo Company
         Company, on_delete=models.SET_NULL, null=True, blank=True, related_name="users"
