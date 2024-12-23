@@ -24,7 +24,6 @@ class EventRetrieveView(APIView):
             # Obtener los sectores únicos de las empresas asociadas a través de stands
             stands = event.stands.all()  # Asume que hay una relación stands en Event
             companies = [stand.company for stand in stands if stand.company]
-            print(companies, "AAAAAAAAAAAA")
             sectors = {company.sector.name for company in companies if company.sector and company.sector}
 
             # Formar la respuesta combinada
