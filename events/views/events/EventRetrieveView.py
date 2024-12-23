@@ -25,7 +25,7 @@ class EventRetrieveView(APIView):
             stands = event.stands.all()  # Asume que hay una relación stands en Event
             companies = [stand.company for stand in stands if stand.company]
             print(companies, "AAAAAAAAAAAA")
-            sectors = {company.sector for company in companies if company.sector and company.sector}
+            sectors = {company.sector.name for company in companies if company.sector and company.sector}
 
             # Formar la respuesta combinada
             response_data = {
