@@ -1,5 +1,5 @@
 from django.db import models
-from users.models import Sector
+from users.models.Sector import Sector
 
 class Company(models.Model):
     name = models.CharField(max_length=255)

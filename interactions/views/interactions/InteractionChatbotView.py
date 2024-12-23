@@ -28,7 +28,7 @@ class InteractionChatbotView(APIView):
             # OpenAI integration
             response = client.chat.completions.create(model="gpt-4o",
             messages=[
-                {"role": "system", "content": f"Eres un asistente virtual de la empresa {company.name}. Seguiras las siguientes instrucciones: {stand.prompts}"},
+                {"role": "system", "content": f"Eres un asistente virtual de la empresa {company.name}. Seguiras las siguientes instrucciones: {stand.prompts}. Contesta concisamente y no generes mucho texto, tiene que ser algo agradable pero rápido."},
                 {"role": "user", "content": question},
             ])
             chatbot_response = response.choices[0].message.content.strip()
