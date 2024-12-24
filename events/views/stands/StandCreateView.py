@@ -9,6 +9,10 @@ from PyPDF2 import PdfReader
 from io import BytesIO
 import base64
 
+import re
+
+YOUTUBE_VIDEO_ID_REGEX = r"^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=))(?P<id>[0-9A-Za-z_-]{11}).*"
+
 
 class StandCreateView(APIView):
     """
@@ -20,7 +24,7 @@ class StandCreateView(APIView):
         try:
             # Obtener el evento
             event = Event.objects.get(pk=request.data["event"])
-            print(request.data)
+
             # Validar si el evento alcanzó el número máximo de stands
             current_stand_count = Stand.objects.filter(event=event).count()
             if current_stand_count >= event.max_stands:
@@ -38,7 +42,21 @@ class StandCreateView(APIView):
                         status=status.HTTP_400_BAD_REQUEST,
                     )
 
-        
+            # Extraer la ID del video si `video_url` está presente
+            video_url = request.data.get("url_video")
+            print("VIDEO",video_url)
+            if video_url:
+                match = re.search(YOUTUBE_VIDEO_ID_REGEX, video_url)
+                print("MATCH",match)
+
+                if match:
+                    request.data["url_video"] = match.group("id")  # Cambia a usar el grupo nombrado "id"
+                else:
+                    return Response(
+                        {"error": "URL de video no válida."},
+                        status=status.HTTP_400_BAD_REQUEST,
+                    )
+
             # Procesar el PDF si `prompts_pdf` está presente
             prompts_text = ""
             prompts_pdf = request.data.get("prompts_pdf")
