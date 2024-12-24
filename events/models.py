@@ -28,6 +28,7 @@ class Stand(models.Model):
     type = models.CharField(max_length=50, choices=TYPE_CHOICES, default='basic')
     catalog_pdf = models.TextField(blank=True, null=True)  # Almacenar PDF en formato base64
     prompts = models.TextField(blank=True, null=True)  # Guardar prompts extraídos del PDF
+    url_video = models.CharField(max_length=500, blank=True, null=True)
 
     def __str__(self):
         return self.name
