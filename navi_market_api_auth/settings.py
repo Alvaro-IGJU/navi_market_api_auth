@@ -117,10 +117,13 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 # Looking to send emails in production? Check out our Email API/SMTP product!
-EMAIL_HOST = 'sandbox.smtp.mailtrap.io'
-EMAIL_HOST_USER = '55b5dfc5f97356'
-EMAIL_HOST_PASSWORD = '58f841c4e5a923'
-EMAIL_PORT = '2525'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'mail.navi-market.com'  # Servidor saliente (SMTP)
+EMAIL_PORT = 465  # Puerto para SMTP
+EMAIL_USE_SSL = True  # Utilizar conexión SSL (no es TLS en este caso)
+EMAIL_HOST_USER = 'no-reply@navi-market.com'  # Tu cuenta de correo
+EMAIL_HOST_PASSWORD = 'F2cInI1LPUhc'  # Contraseña de tu cuenta
+DEFAULT_FROM_EMAIL = 'Navi Market <navimarket.dev@navi-market.com>'  # Email "De"
 
 AUTH_USER_MODEL = 'users.User'
 
