@@ -1,5 +1,5 @@
 from rest_framework.views import APIView
-from rest_framework.permissions import  IsAdminUser
+from users.permissions import  IsSuperUser
 from rest_framework import status
 from events.models import Stand
 from rest_framework.response import Response
@@ -9,7 +9,7 @@ class StandUpdateView(APIView):
     """
     Vista para actualizar un stand (Solo administradores).
     """
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsSuperUser]
 
     def put(self, request, pk):
         try:
