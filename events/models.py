@@ -15,9 +15,9 @@ from django.db import models
 
 class Stand(models.Model):
     TYPE_CHOICES = [
-        ('basic', 'Basic'),
-        ('premium', 'Premium'),
-        ('vip', 'VIP'),
+        ('bronze', 'Bronze'),
+        ('silver', 'Silver'),
+        ('gold', 'Gold'),
     ]
 
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="stands")
