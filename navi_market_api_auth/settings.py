@@ -15,7 +15,7 @@ SECRET_KEY = 'django-insecure-dv(0abc3z@l=85tp8*6xmyofjqs00zp(j1os6ede(258z=m^gd
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['18.184.173.4', 'localhost']
 
 
 # Application definition
@@ -101,10 +101,10 @@ WSGI_APPLICATION = 'navi_market_api_auth.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'navi_market',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': 'localhost',  # O la IP del servidor de la base de datos
+        'NAME': 'navimarketdb',
+        'USER': 'admin',
+        'PASSWORD': 'pruebanavimarket',
+        'HOST': 'navimarketdb.c1aqeyy8gohs.eu-central-1.rds.amazonaws.com',  # O la IP del servidor de la base de datos
         'PORT': '3306',
     }
 }
@@ -163,6 +163,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
+
+import os
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
