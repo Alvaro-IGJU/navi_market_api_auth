@@ -69,9 +69,27 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
+    'http://navi-market-demo.s3-website.eu-central-1.amazonaws.com',
     'http://localhost:3000',
 ]
 
+CORS_ALLOW_METHODS = [
+	"GET",
+	"POST",
+	"PUT", 
+	"DELETE",
+	"OPTIONS",
+]
+
+CORS_ALLOW_HEADERS = [
+	"Authorization",
+	"Content-Type",
+]
+
+CORS_ALLOW_CREDENTIALS = True
+
+DATA_UPLOAD_MAX_MEMORY_SIZE= 104857600
+FILE_UPLOAD_MAX_MEMORY_SIZE= 104857600
 
 ROOT_URLCONF = 'navi_market_api_auth.urls'
 
