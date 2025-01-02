@@ -11,7 +11,8 @@ from events.views.stands import (
     StandListView,
     StandCreateView,
     StandUpdateView,
-    StandDeleteView
+    StandDeleteView,
+    GetStandByIdView
     )
 
 
@@ -24,6 +25,7 @@ urlpatterns = [
     path('<int:event_id>/stands/', EventStandsView.as_view(), name='event-stands'),
 
     path('stands/', StandListView.as_view(), name='stand-list'),
+    path("stands/<int:stand_id>/", GetStandByIdView.as_view(), name="get-stand-by-id"),
     path('stands/create/', StandCreateView.as_view(), name='stand-create'),
     path('stands/<int:pk>/update/', StandUpdateView.as_view(), name='stand-update'),
     path('stands/<int:pk>/delete/', StandDeleteView.as_view(), name='stand-delete'),
