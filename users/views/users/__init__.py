@@ -7,3 +7,7 @@ from .AdminUserViewSet import AdminUserViewSet
 from .AdminPositionViewSet import AdminPositionViewSet
 from .AdminSectorViewSet import AdminSectorViewSet
 from .AdminCreateCompanyUserView import AdminCreateCompanyUserView
+from .ForgotPasswordView import ForgotPasswordView
+from .ResetPasswordView import ResetPasswordView
+
+from .VerifyTokenView import VerifyTokenView

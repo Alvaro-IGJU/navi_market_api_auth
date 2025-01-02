@@ -1,10 +1,9 @@
-
-from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from companies.models import Company
 from .Position import Position
 from .Sector import Sector
+
 class User(AbstractUser):
     ROLE_CHOICES = (
         ('User', 'User'),
@@ -26,6 +25,18 @@ class User(AbstractUser):
 
     USERNAME_FIELD = 'email'  # Identificador principal
     REQUIRED_FIELDS = ['username']  # Campos requeridos además del email
+
+    # Add related_name to avoid clash in reverse relationships
+    groups = models.ManyToManyField(
+        'auth.Group',
+        related_name='user_set_custom',  # Custom related_name to avoid clashes
+        blank=True
+    )
+    user_permissions = models.ManyToManyField(
+        'auth.Permission',
+        related_name='user_permissions_custom',  # Custom related_name to avoid clashes
+        blank=True
+    )
 
     def __str__(self):
         return f"{self.email} - {self.get_role_display()}"

@@ -2,6 +2,10 @@ from rest_framework import serializers
 from django.contrib.auth import authenticate
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.tokens import RefreshToken
+from .models import PasswordResetToken
+from django.contrib.auth import password_validation
+from django.core.exceptions import ValidationError
+
 from .models import User, Position, Sector
 
 class UserSerializer(serializers.ModelSerializer):
@@ -123,3 +127,16 @@ class ProfileSerializer(serializers.ModelSerializer):
         attrs['profile_picture'] = self.validate_profile_picture(attrs.get('profile_picture'))
         return attrs
 
+class ForgotPasswordSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+class ResetPasswordSerializer(serializers.Serializer):
+    token = serializers.UUIDField()
+    new_password = serializers.CharField(write_only=True)
+    
+    def validate_new_password(self, value):
+        try:
+            password_validation.validate_password(value)
+        except ValidationError as e:
+            raise serializers.ValidationError(str(e))
+        return value
