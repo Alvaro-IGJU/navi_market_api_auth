@@ -6,3 +6,4 @@ from .InteractionUsersLocationView import InteractionUsersLocationView
 from .InteractionCompanyUserPositionsView import InteractionCompanyUserPositionsView
 from .InteractionCompanyUserSectorsView import InteractionCompanyUserSectorsView
 from .GetCompanyInterestedUsers import GetCompanyInterestedUsers
+from .GetInterestFunnelViewByCompany import GetInterestFunnelViewByCompany

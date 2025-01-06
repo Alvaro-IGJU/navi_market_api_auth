@@ -41,13 +41,15 @@ class GetCompanyInterestedUsers(APIView):
 
             # Obtener información de los usuarios interesados
             interested_users = User.objects.filter(id__in=user_ids).values(
-                "username", "email", "position__title", "sector__name"
+                "username", "email", "location", "company", "position__title", "sector__name", 
             )
             # Formatear los datos para el frontend
             response_data = [
                 {
                     "username": user["username"],
-                    "email": user["email"],
+                    "email": user["email"] or "Sin email asignado",
+                    "location": user["location"] or "Sin ubicación asignada",
+                    "company": user["company"] or "Sin empresa asignada",
                     "position_title": user["position__title"] or "Sin posición asignada",
                     "sector_name": user["sector__name"] or "Sin sector asignado"
                 }
