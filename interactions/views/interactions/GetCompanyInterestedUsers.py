@@ -37,7 +37,7 @@ class GetCompanyInterestedUsers(APIView):
             # Obtener las interacciones relacionadas con esos stands
             interactions = Interaction.objects.filter(stand__in=stands)
 
-            # Calcular los puntos de interés por usuario y ordenar por total_points descendente
+            # Calcular los puntos de interés por usuario
             user_scores = interactions.values("visit__user_id").annotate(
                 time_points=ExpressionWrapper(
                     Coalesce(Sum(
@@ -66,14 +66,41 @@ class GetCompanyInterestedUsers(APIView):
                 F("meeting_points") +
                 F("catalog_points")
             )).annotate(
-                interest_level=Case(
-                    When(total_points__lte=50, then=Value("Bajo")),
-                    When(total_points__gt=50, total_points__lte=100, then=Value("Moderado")),
-                    When(total_points__gt=100, then=Value("Alto")),
-                    default=Value("Desconocido"),
+                priority=Case(
+                    When(
+                        Q(meeting_points__gte=40) &
+                        Q(website_points__gte=15) &
+                        Q(catalog_points__gte=15),
+                        then=Value("Decidido")
+                    ),
+                    When(
+                        Q(meeting_points__gte=40) &
+                        Q(catalog_points__gte=15),
+                        then=Value("Estratégico")
+                    ),
+                    When(
+                        Q(website_points__gte=15) &
+                        Q(catalog_points__gte=15),
+                        then=Value("Evaluador")
+                    ),
+                    When(
+                        Q(video_points__gte=10) &
+                        Q(chatbot_points__gte=5),
+                        then=Value("Explorador")
+                    ),
+                    When(
+                        Q(video_points__gte=10) &
+                        Q(mailbox_points__gte=15),
+                        then=Value("Curioso")
+                    ),
+                    When(
+                        Q(mailbox_points__gte=15),
+                        then=Value("Lejano")
+                    ),
+                    default=Value("Confundido"),
                     output_field=CharField()
                 )
-            ).order_by('-total_points')  # Ordenar por puntos descendente
+            )
 
             # Obtener información de los usuarios
             user_ids = user_scores.values_list("visit__user_id", flat=True)
@@ -81,7 +108,7 @@ class GetCompanyInterestedUsers(APIView):
                 "id", "username", "email", "location", "company", "position__title", "sector__name"
             )
 
-            # Combinar información del usuario con sus niveles de interés
+            # Combinar información del usuario con sus niveles de interés y prioridades
             response_data = []
             for user in users:
                 score_data = user_scores.get(visit__user_id=user["id"])
@@ -92,7 +119,7 @@ class GetCompanyInterestedUsers(APIView):
                     "company": user["company"] or "Sin empresa asignada",
                     "position_title": user["position__title"] or "Sin posición asignada",
                     "sector_name": user["sector__name"] or "Sin sector asignado",
-                    "interest_level": score_data["interest_level"],
+                    "priority": score_data["priority"],
                     "total_points": score_data["total_points"]
                 })
 
