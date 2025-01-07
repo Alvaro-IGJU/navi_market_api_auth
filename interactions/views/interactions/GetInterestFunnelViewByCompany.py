@@ -1,4 +1,4 @@
-from django.db.models import Count, Sum, F, Q, Value, IntegerField, ExpressionWrapper, Case, When
+from django.db.models import Count, Q, Value, Case, When, IntegerField
 from django.db.models.functions import Coalesce
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -10,8 +10,7 @@ from events.models import Stand
 
 class GetInterestFunnelViewByCompany(APIView):
     """
-    Devuelve los datos del embudo de interés de los usuarios
-    clasificados como Interés bajo, moderado o alto.
+    Devuelve la cantidad de usuarios clasificados por nivel de interés.
     """
     permission_classes = [IsAuthenticated, IsCompany]
 
@@ -27,7 +26,6 @@ class GetInterestFunnelViewByCompany(APIView):
 
             # Filtrar stands relacionados con la empresa
             stands = Stand.objects.filter(company_id=company_id)
-
             if not stands.exists():
                 return Response(
                     {"error": "No se encontraron stands para esta empresa."},
@@ -37,55 +35,88 @@ class GetInterestFunnelViewByCompany(APIView):
             # Obtener todas las interacciones relacionadas
             interactions = Interaction.objects.filter(stand__in=stands)
 
-            # Calcular los puntos por usuario
+            # Verificar las condiciones de cada usuario
             user_scores = interactions.values("visit__user_id").annotate(
-                # Puntos por tiempo limitado a un máximo de 60 segundos por interacción
-                raw_time_points=Coalesce(Sum("interaction_duration"), 0),
-                time_points=ExpressionWrapper(
-                    Coalesce(Sum(
-                        Case(
-                            When(
-                                Q(interaction_type="stand_entry") & Q(interaction_duration__lte=60),
-                                then=F("interaction_duration")
-                            ),
-                            default=Value(60),
-                        )
-                    ), 0) / Value(10),
-                    output_field=IntegerField(),
-                ),  # Cada 10 segundos = 1 punto
+                has_schedule_meeting=Count("id", filter=Q(interaction_type="schedule_meeting")),
+                has_info_pc=Count("id", filter=Q(interaction_type="info_pc")),
+                has_download_catalog=Count("id", filter=Q(interaction_type="download_catalog")),
+                has_show_video=Count("id", filter=Q(interaction_type="show_video")),
+                has_talk_chatbot=Count("id", filter=Q(interaction_type="talk_chatbot")),
+                has_mailbox=Count("id", filter=Q(interaction_type="mailbox")),
+            ).annotate(
+                level=Case(
+                    # Usuarios Decididos
+                    When(
+                        Q(has_schedule_meeting__gte=1) &
+                        Q(has_info_pc__gte=1) &
+                        Q(has_download_catalog__gte=1),
+                        then=Value(1)
+                    ),
+                    # Usuarios Estratégicos
+                    When(
+                        Q(has_schedule_meeting__gte=1) &
+                        Q(has_download_catalog__gte=1),
+                        then=Value(2)
+                    ),
+                    # Usuarios Evaluadores
+                    When(
+                        Q(has_info_pc__gte=1) &
+                        Q(has_download_catalog__gte=1),
+                        then=Value(3)
+                    ),
+                    # Usuarios Exploradores
+                    When(
+                        Q(has_show_video__gte=1) &
+                        Q(has_talk_chatbot__gte=1),
+                        then=Value(4)
+                    ),
+                    # Usuarios Curiosos
+                    When(
+                        Q(has_show_video__gte=1) &
+                        Q(has_mailbox__gte=1),
+                        then=Value(5)
+                    ),
+                    # Usuarios Lejanos
+                    When(
+                        Q(has_mailbox__gte=1),
+                        then=Value(6)
+                    ),
+                    # Usuarios Confundidos
+                    default=Value(7),
+                    output_field=IntegerField()
+                )
+            )
 
-                # Puntos por otros tipos de interacción
-                chatbot_points=Count("id", filter=Q(interaction_type="talk_chatbot")) * 5,
-                website_points=Count("id", filter=Q(interaction_type="info_pc")) * 15,
-                mailbox_points=Count("id", filter=Q(interaction_type="mailbox_click")) * 15,
-                video_points=Count("id", filter=Q(interaction_type="show_video")) * 10,
-                meeting_points=Count("id", filter=Q(interaction_type="schedule_meeting")) * 40,
-                catalog_points=Count("id", filter=Q(interaction_type="download_catalog")) * 15,
-            ).annotate(total_points=(
-                F("time_points") +
-                F("chatbot_points") +
-                F("website_points") +
-                F("mailbox_points") +
-                F("video_points") +
-                F("meeting_points") +
-                F("catalog_points")
-            ))
+            # Contar usuarios por nivel
+            levels = {}
+            for user in user_scores:
+                level = user["level"]
+                levels[level] = levels.get(level, 0) + 1
 
-            # Clasificar usuarios por interés
-            interest_levels = {
-                "Bajo": user_scores.filter(total_points__lte=50).count(),
-                "Moderado": user_scores.filter(total_points__gt=50, total_points__lte=100).count(),
-                "Alto": user_scores.filter(total_points__gt=100).count(),
-            }
-
-            # Estructurar datos del funnel
-            funnel_data = [
-                {"id": "low_interest", "value": interest_levels["Bajo"], "label": "Interés bajo"},
-                {"id": "moderate_interest", "value": interest_levels["Moderado"], "label": "Interés moderado"},
-                {"id": "high_interest", "value": interest_levels["Alto"], "label": "Interés alto"},
+            # Formatear los datos
+            formatted_data = [
+                {
+                    "level": level,
+                    "category": self.get_category(level),
+                    "count": count,
+                }
+                for level, count in sorted(levels.items())
             ]
 
-            return Response(funnel_data, status=200)
+            return Response(formatted_data, status=200)
 
         except Exception as e:
             return Response({"error": str(e)}, status=500)
+
+    @staticmethod
+    def get_category(level):
+        categories = {
+            1: "Usuarios Decididos",
+            2: "Usuarios Estratégicos",
+            3: "Usuarios Evaluadores",
+            4: "Usuarios Exploradores",
+            5: "Usuarios Curiosos",
+            6: "Usuarios Lejanos",
+            7: "Usuarios Confundidos",
+        }
+        return categories.get(level, "Desconocido")
