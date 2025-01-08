@@ -9,7 +9,6 @@ class Visit(models.Model):
     is_recurrent = models.BooleanField(default=False)
     visit_date = models.DateTimeField(auto_now_add=True)
 
-
 class Interaction(models.Model):
     # Opciones predefinidas para interaction_type
     INTERACTION_TYPE_CHOICES = [
@@ -28,7 +27,11 @@ class Interaction(models.Model):
         choices=INTERACTION_TYPE_CHOICES,  # Limitar a las opciones predefinidas
     )
     interaction_date = models.DateTimeField(auto_now_add=True)
-    interaction_duration = models.IntegerField(default=0)  # Duration in seconds
+    interaction_duration = models.DecimalField(
+        max_digits=10,  # Tamaño máximo (e.g., 9999999.99)
+        decimal_places=2,  # Mantener solo 2 decimales
+        default=0.00
+    )
 
     def __str__(self):
         return f"{self.interaction_type} at {self.stand.name}"
