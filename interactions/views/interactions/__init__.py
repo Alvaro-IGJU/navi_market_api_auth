@@ -7,3 +7,5 @@ from .InteractionCompanyUserPositionsView import InteractionCompanyUserPositions
 from .InteractionCompanyUserSectorsView import InteractionCompanyUserSectorsView
 from .GetCompanyInterestedUsers import GetCompanyInterestedUsers
 from .GetInterestFunnelViewByCompany import GetInterestFunnelViewByCompany
+from .GetScheduledMeetingView import UsersScheduledMeetingView
+

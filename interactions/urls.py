@@ -24,6 +24,7 @@ urlpatterns = [
     path('companies/<int:company_id>/user-sectors/', InteractionCompanyUserSectorsView.as_view(), name='user-sectors'),
     path('companies/<int:company_id>/interested-users/', GetCompanyInterestedUsers.as_view(), name='get_interested_users'),
     path('companies/<int:company_id>/interest-funnel/', GetInterestFunnelViewByCompany.as_view(), name='get_interested_users'),
+    path('companies/<int:company_id>/scheduled-meeting/', UsersScheduledMeetingView.as_view(), name='users-scheduled-meeting'),
 
 
     # Nueva URL para el resumen de visitas para el admin
