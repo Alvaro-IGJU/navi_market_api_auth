@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'gamification',
     'campaigns',
     'django_extensions',
+    'channels'
 
 ]
 
@@ -204,3 +205,20 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 OPENAI_API_KEY = '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'
+
+ASGI_APPLICATION = 'navi_market_api_auth.asgi.application'
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer",
+    },
+}
+
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "channels_redis.core.RedisChannelLayer",
+#         "CONFIG": {
+#             "hosts": [("127.0.0.1", 6379)],
+#         },
+#     },
+# }
