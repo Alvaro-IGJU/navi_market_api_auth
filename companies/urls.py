@@ -3,7 +3,10 @@ from companies.views.companies import (
     CompanyAdminListView,
     CompanyAdminDetailView,
     CompanyOwnerDetailView,
-    GetCompanyDetails
+    GetCompanyDetails,
+    ChatListView,
+    CreateChatView,
+    RejectScheduleMeetingView
 )
 
 urlpatterns = [
@@ -14,5 +17,8 @@ urlpatterns = [
     
     # Rutas para dueños de empresas
     path('owner/company/', CompanyOwnerDetailView.as_view(), name='owner-company-detail'),
+    path('chats/', ChatListView.as_view(), name='chat-list'),
+    path("create-chat/", CreateChatView.as_view(), name="create_chat"),
+    path("reject-meeting/", RejectScheduleMeetingView.as_view(), name="reject-meeting"),
 
 ]

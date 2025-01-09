@@ -2,3 +2,6 @@ from .CompanyAdminListView import CompanyAdminListView
 from .CompanyAdminDetailView import CompanyAdminDetailView
 from .CompanyOwnerDetailView import CompanyOwnerDetailView
 from .GetCompanyDetails import GetCompanyDetails
+from .ChatListView import ChatListView
+from .CreateChatView import CreateChatView
+from .RejectScheduleMeetingView import RejectScheduleMeetingView
