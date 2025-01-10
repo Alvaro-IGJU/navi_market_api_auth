@@ -6,7 +6,8 @@ from companies.views.companies import (
     GetCompanyDetails,
     ChatListView,
     CreateChatView,
-    RejectScheduleMeetingView
+    RejectScheduleMeetingView,
+    ChatMessagesView
 )
 
 urlpatterns = [
@@ -20,5 +21,6 @@ urlpatterns = [
     path('chats/', ChatListView.as_view(), name='chat-list'),
     path("create-chat/", CreateChatView.as_view(), name="create_chat"),
     path("reject-meeting/", RejectScheduleMeetingView.as_view(), name="reject-meeting"),
+    path("chats/<int:chat_id>/messages/", ChatMessagesView.as_view(), name="chat-messages"),
 
 ]

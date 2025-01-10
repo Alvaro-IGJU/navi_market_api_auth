@@ -21,11 +21,16 @@ class InteractionRegisterView(APIView):
 
             # Registrar interacción
             interaction_type = request.data.get("interaction_type")
+            status_value = "pending" if interaction_type == "schedule_meeting" else None
             interaction = Interaction.objects.create(
                 visit=visit,
                 stand=stand,
                 interaction_type=interaction_type,
-            )
+                status=status_value  # Asignar "pending" solo para "schedule_meeting"
+            )   
+          
+
+                
 
             # Si la interacción es de tipo "mailbox", enviar un correo electrónico
             if interaction_type == "mailbox":
