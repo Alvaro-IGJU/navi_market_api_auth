@@ -72,7 +72,7 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
-
+    'http://3.72.110.0:3000',
     'http://192.168.1.43:3000',
 ]
 
@@ -123,7 +123,7 @@ WSGI_APPLICATION = 'navi_market_api_auth.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'navimarketdb',
+        'NAME': 'navidb',
         'USER': 'admin',
         'PASSWORD': 't2}T1n5cP5M4#+WXxKWI',
         'HOST': 'navidb.ch4uc226ujsp.eu-central-1.rds.amazonaws.com',  # O la IP del servidor de la base de datos
