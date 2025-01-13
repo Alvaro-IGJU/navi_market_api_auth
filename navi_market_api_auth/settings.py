@@ -120,27 +120,27 @@ WSGI_APPLICATION = 'navi_market_api_auth.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'navimarketdb',
-#         'USER': 'admin',
-#         'PASSWORD': 'pruebanavimarket',
-#         'HOST': 'navimarketdb.c1aqeyy8gohs.eu-central-1.rds.amazonaws.com',  # O la IP del servidor de la base de datos
-#         'PORT': '3306',
-#     }
-# }
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'navi_market',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': 'localhost',  # O la IP del servidor de la base de datos
+        'NAME': 'navimarketdb',
+        'USER': 'admin',
+        'PASSWORD': 't2}T1n5cP5M4#+WXxKWI',
+        'HOST': 'navidb.ch4uc226ujsp.eu-central-1.rds.amazonaws.com',  # O la IP del servidor de la base de datos
         'PORT': '3306',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'navi_market',
+#         'USER': 'root',
+#         'PASSWORD': '',
+#         'HOST': 'localhost',  # O la IP del servidor de la base de datos
+#         'PORT': '3306',
+#     }
+# }
 
 AUTHENTICATION_BACKENDS = [
     'users.authentication.EmailOrUsernameModelBackend',  # Backend personalizado
