@@ -77,9 +77,9 @@ class AdminCreateCompanyUserView(APIView):
                 <p style="font-size: 16px; color: #333;">
                     Por favor, inicia sesión en tu cuenta y recuerda cambiar tu contraseña por una que solo tú conozcas.
                 </p>
-                <a href="https://navi-market.com/" style="display: inline-block; padding: 10px 20px; background-color: #C7AA68; color: white; text-decoration: none; border-radius: 5px; font-size: 16px; text-align: center; margin-top: 20px;">Iniciar sesión</a>
+                <a href="https://navifairs.com/" style="display: inline-block; padding: 10px 20px; background-color: #C7AA68; color: white; text-decoration: none; border-radius: 5px; font-size: 16px; text-align: center; margin-top: 20px;">Iniciar sesión</a>
                 <p style="font-size: 14px; color: #999; text-align: center; margin-top: 30px;">
-                    Si tienes alguna pregunta, no dudes en <a href="https://navi-market.com/contact" style="color: #C7AA68; text-decoration: none;">contactarnos</a>.
+                    Si tienes alguna pregunta, no dudes en <a href="https://navifairs.com/contact" style="color: #C7AA68; text-decoration: none;">contactarnos</a>.
                 </p>
                 <p style="font-size: 14px; color: #999; text-align: center; margin-top: 10px;">
                     Gracias por confiar en Navi Market. 💛

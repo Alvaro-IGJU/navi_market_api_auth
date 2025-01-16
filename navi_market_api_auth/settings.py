@@ -15,7 +15,7 @@ SECRET_KEY = 'django-insecure-dv(0abc3z@l=85tp8*6xmyofjqs00zp(j1os6ede(258z=m^gd
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['3.74.167.59', 'localhost']
+ALLOWED_HOSTS = ['3.74.167.59', 'localhost', '192.168.1.129']
 # ALLOWED_HOSTS = ['*']
 
 
@@ -74,7 +74,7 @@ CORS_ALLOWED_ORIGINS = [
     'http://navi-front-bucket.s3-website.eu-central-1.amazonaws.com',
     'http://localhost:3000',
     'http://3.74.167.59:3000',
-    'http://192.168.1.43:3000',
+    'http://192.168.1.129:3000',
 ]
 
 CORS_ALLOW_METHODS = [
@@ -120,27 +120,27 @@ WSGI_APPLICATION = 'navi_market_api_auth.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'navidb',
-        'USER': 'admin',
-        'PASSWORD': 't2}T1n5cP5M4#+WXxKWI',
-        'HOST': 'navidb.ch4uc226ujsp.eu-central-1.rds.amazonaws.com',  # O la IP del servidor de la base de datos
-        'PORT': '3306',
-    }
-}
-
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'navi_market',
-#         'USER': 'root',
-#         'PASSWORD': '',
-#         'HOST': 'localhost',  # O la IP del servidor de la base de datos
+#         'NAME': 'navidb',
+#         'USER': 'admin',
+#         'PASSWORD': 't2}T1n5cP5M4#+WXxKWI',
+#         'HOST': 'navidb.ch4uc226ujsp.eu-central-1.rds.amazonaws.com',  # O la IP del servidor de la base de datos
 #         'PORT': '3306',
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'navi_market',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': 'localhost',  # O la IP del servidor de la base de datos
+        'PORT': '3306',
+    }
+}
 
 AUTHENTICATION_BACKENDS = [
     'users.authentication.EmailOrUsernameModelBackend',  # Backend personalizado
