@@ -63,7 +63,7 @@ class ForgotPasswordView(APIView):
                             Si no realizaste esta solicitud, puedes ignorar este mensaje.
                         </p>
                         <p style="font-size: 14px; color: #999; text-align: center; margin-top: 30px;">
-                            Si tienes alguna pregunta, no dudes en <a href="https://navi-market.com/contact" style="color: #C7AA68; text-decoration: none;">contactarnos</a>.
+                            Si tienes alguna pregunta, no dudes en <a href="https://navifairs.com/contact" style="color: #C7AA68; text-decoration: none;">contactarnos</a>.
                         </p>
                         <p style="font-size: 14px; color: #999; text-align: center; margin-top: 10px;">
                             Gracias por confiar en Navi Market. 💛
