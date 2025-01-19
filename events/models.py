@@ -22,6 +22,7 @@ class Stand(models.Model):
 
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="stands")
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name="stands")
+    company_logo = models.TextField(blank=True, null=True)  # Cambia a TextField para almacenar base64
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     position = models.IntegerField(blank=True, null=True)

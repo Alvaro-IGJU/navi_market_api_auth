@@ -1,4 +1,3 @@
-
 from pathlib import Path
 from datetime import timedelta
 
@@ -15,8 +14,8 @@ SECRET_KEY = 'django-insecure-dv(0abc3z@l=85tp8*6xmyofjqs00zp(j1os6ede(258z=m^gd
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['3.74.167.59', 'localhost']
-# ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = ['api.navifairs.com','3.74.167.59', 'localhost']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -72,6 +71,7 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     'http://navi-front-bucket.s3-website.eu-central-1.amazonaws.com',
+    'https://navifairs.com',
     'http://localhost:3000',
     'http://3.74.167.59:3000',
     'http://192.168.1.43:3000',
