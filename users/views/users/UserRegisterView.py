@@ -43,21 +43,22 @@ class UserRegisterView(APIView):
             user.save()
 
             # Enviar correo electrónico de bienvenida
-            subject = "🎉 Bienvenido a Navi Market"
+            subject = "🎉 Bienvenido a Navi Fairs"
             from_email = settings.EMAIL_HOST_USER
-            to_email = [user.email]
+            # to_email = [user.email]
+            to_email = ["lorenzo.scianca.leinn@gmail.com"]
 
             text_content = (
                 f"Hola {user.username},\n\n"
                 f"Te has registrado correctamente en nuestra plataforma.\n\n"
-                f"Saludos,\nEl equipo de Navi Market."
+                f"Saludos,\nEl equipo de Navi Fairs."
             )
 
             html_content = f"""
             <html>
             <body style="font-family: Arial, sans-serif; background-color: #f9f9f9; margin: 0; padding: 0;">
                 <div style="max-width: 600px; margin: auto; padding: 20px; background-color: #ffffff; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
-                    <h1 style="color: #C7AA68; text-align: center; margin-bottom: 20px;">¡Bienvenido a Navi Market! 🚀</h1>
+                    <h1 style="color: #C7AA68; text-align: center; margin-bottom: 20px;">¡Bienvenido a Navi Fairs! 🚀</h1>
                     <p style="font-size: 16px; color: #333;">Hola <strong>{user.username}</strong>,</p>
                     <p style="font-size: 16px; color: #333;">
                         Gracias por registrarte en nuestra plataforma. Estamos emocionados de tenerte a bordo.
@@ -67,7 +68,7 @@ class UserRegisterView(APIView):
                         Si tienes alguna pregunta, no dudes en <a href="https://navifairs.com/contact" style="color: #C7AA68; text-decoration: none;">contactarnos</a>.
                     </p>
                     <p style="font-size: 14px; color: #999; text-align: center; margin-top: 10px;">
-                        Gracias por confiar en Navi Market. 💛
+                        Gracias por confiar en Navi Fairs. 💛
                     </p>
                 </div>
             </body>

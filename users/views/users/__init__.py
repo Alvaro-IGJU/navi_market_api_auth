@@ -5,6 +5,7 @@ from .UserChangePasswordView import UserChangePasswordView
 
 from .AdminUserViewSet import AdminUserViewSet
 from .AdminPositionViewSet import AdminPositionViewSet
+from .AdminGetRegisteredUsers import AdminGetRegisteredUsers
 from .AdminSectorViewSet import AdminSectorViewSet
 from .AdminCreateCompanyUserView import AdminCreateCompanyUserView
 from .ForgotPasswordView import ForgotPasswordView

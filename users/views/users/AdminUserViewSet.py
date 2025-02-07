@@ -6,6 +6,6 @@ from users.serializers import (
 )
 
 class AdminUserViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsSuperUser]
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [IsSuperUser]

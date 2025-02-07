@@ -72,11 +72,17 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     'http://navi-front-bucket.s3-website.eu-central-1.amazonaws.com',
     'https://navifairs.com',
-    'http://localhost:3000',
     'http://3.74.167.59:3000',
     'http://192.168.1.129:3000',
 ]
 
+# CORS_ALLOWED_ORIGINS = [
+#     'http://navi-front-bucket.s3-website.eu-central-1.amazonaws.com',
+#     'https://navifairs.com',
+#     'http://localhost:3000',
+#     'http://3.74.167.59:3000',
+#     'http://192.168.1.129:3000',
+# ]
 CORS_ALLOW_METHODS = [
 	"GET",
 	"POST",

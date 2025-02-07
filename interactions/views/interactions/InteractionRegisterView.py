@@ -46,7 +46,7 @@ class InteractionRegisterView(APIView):
                     f"Nombre: {company.name}\n"
                     f"Descripción: {company.description}\n\n"
                     f"Si tienes alguna pregunta, no dudes en contactarnos.\n\n"
-                    f"Saludos,\nEl equipo de Navi Market."
+                    f"Saludos,\nEl equipo de Navi Fairs."
                 )
 
                 html_content = f"""
@@ -65,7 +65,7 @@ class InteractionRegisterView(APIView):
                             Si tienes alguna pregunta, no dudes en contactarnos.
                         </p>
                         <p style="font-size: 14px; color: #999; text-align: center; margin-top: 30px;">
-                            Gracias por confiar en Navi Market. 💛
+                            Gracias por confiar en Navi Fairs. 💛
                         </p>
                     </div>
                 </body>

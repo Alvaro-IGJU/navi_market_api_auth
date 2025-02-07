@@ -48,10 +48,10 @@ class AdminCreateCompanyUserView(APIView):
         user.save()
 
         # Enviar correo electrónico al usuario con imagen
-        subject = "🎉 Bienvenido a Navi Market"
+        subject = "🎉 Bienvenido a Navi Fairs"
         from_email = settings.EMAIL_HOST_USER
         to_email = [email]
-
+        print(to_email)
         text_content = (
             f"Hola {username},\n\n"
             f"Se ha creado una cuenta para ti en nuestra plataforma.\n\n"
@@ -65,7 +65,7 @@ class AdminCreateCompanyUserView(APIView):
         <html>
         <body style="font-family: Arial, sans-serif; background-color: #f9f9f9; margin: 0; padding: 0;">
             <div style="max-width: 600px; margin: auto; padding: 20px; background-color: #ffffff; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
-                <h1 style="color: #C7AA68; text-align: center; margin-bottom: 20px;">¡Bienvenido a Navi Market! 🚀</h1>
+                <h1 style="color: #C7AA68; text-align: center; margin-bottom: 20px;">¡Bienvenido a Navi Fairs! 🚀</h1>
                 <p style="font-size: 16px; color: #333;">Hola <strong>{username}</strong>,</p>
                 <p style="font-size: 16px; color: #333;">
                     Nos alegra que te hayas unido a nuestra plataforma. Hemos creado una cuenta para ti para que puedas empezar a disfrutar de nuestros servicios.
@@ -82,7 +82,7 @@ class AdminCreateCompanyUserView(APIView):
                     Si tienes alguna pregunta, no dudes en <a href="https://navifairs.com/contact" style="color: #C7AA68; text-decoration: none;">contactarnos</a>.
                 </p>
                 <p style="font-size: 14px; color: #999; text-align: center; margin-top: 10px;">
-                    Gracias por confiar en Navi Market. 💛
+                    Gracias por confiar en Navi Fairs. 💛
                 </p>
             </div>
         </body>

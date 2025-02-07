@@ -11,6 +11,7 @@ from users.views.users import (
     AdminPositionViewSet,
     AdminSectorViewSet,
     AdminCreateCompanyUserView,
+    AdminGetRegisteredUsers,
     ForgotPasswordView,
     ResetPasswordView,
     VerifyTokenView
@@ -42,4 +43,5 @@ urlpatterns = [
     path('', include(router.urls)),  # Incluye las rutas de positions y sectors
 
     path('admin/create-company-user/', AdminCreateCompanyUserView.as_view(), name='create_company_user'),
+    path('admin/get-users/', AdminGetRegisteredUsers.as_view(), name='get_users'),
 ]
